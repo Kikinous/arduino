@@ -30,7 +30,7 @@ void setup() {
 
   sms.beginSMS("+33673997334");
 //  sms.beginSMS("+33787025242");
-  sms.print("Relai actif ; pret a recevoir instructions ('F' pour OFF ou 'N' pour ON)");
+  sms.print("Module GSM-relai operationel ; relai OFF ; pret a recevoir instructions ('F' pour OFF ou 'N' pour ON)");
   sms.endSMS();
   Serial.println("\nMessage envoye!\n");
 
@@ -71,9 +71,12 @@ void loop() {
     sms.flush();
     Serial.println("MESSAGE DELETED");
 
-    // Agit et repond
+    // Agit 
+    int cas = process_code(code);
+    
+    // repond a à l'envoyeur
     sms.beginSMS(senderNumber);
-    switch (process_code(code)){
+    switch (cas){
       case 0:
         sms.print("Extinction du relai -- recu");
         break;
@@ -85,7 +88,25 @@ void loop() {
         break;
     }
     sms.endSMS();
-    Serial.println("\nMessage envoye!\n");
+    Serial.println("\nMessage envoye a l'envoyeur!\n");
+
+    // informe l'admin
+    sms.beginSMS("+33673997334");
+    switch (cas){
+      case 0:
+        sms.print("Extinction du relai -- recu");
+        break;
+      case 1:
+        sms.print("Allumage du relai -- recu");
+        break;
+      case 2:
+        sms.print("Juste un caractere : 'N' pour ON ou 'F' pour OFF");
+        break;
+    }
+    sms.endSMS();
+    Serial.println("\nMessage envoye a l'admin!\n");
+
+  
   } 
 
 
