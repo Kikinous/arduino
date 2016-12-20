@@ -1,6 +1,12 @@
 #include <GSM.h>
 #define PINNUMBER ""
 
+
+// pin 2 (rouge, RX du UNO, TX du SIM900) 
+// pin 3 (orange, TX du UNO, RX du SIM900)
+// pin 13 : commande relay et LED 
+// marrond, rouge, noir =  GND , 5V, GND
+
 GSM gsmAccess;
 GSM_SMS sms;
 
